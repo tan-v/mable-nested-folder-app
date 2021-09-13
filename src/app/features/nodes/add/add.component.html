@@ -1,0 +1,8 @@
+<input type="text" #inputText value="" width="80" autofocus required/>
+<button type="button" class="btn btn-default" (click)="handleInputText(inputText.value)">
+  <span class="fas fa-check fa-sm text-success" aria-hidden="true"></span>
+</button>
+<button type="button" class="btn btn-default" (click)="handleCancel()">
+  <span class="fas fa-times fa-sm text-danger" aria-hidden="true"></span>
+</button>
+<div *ngIf="showError" class="text-danger">Value is required.</div>

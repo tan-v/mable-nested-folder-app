@@ -1,0 +1,57 @@
+<ng-container *ngIf="data?.length">
+  <ng-container *ngFor="let nodeData of data; let i = index">
+    <div class="pt-2" *ngIf="nodeData?.type === 'unset'; else nonEditableNode">
+      |{{ "_".repeat(spaceCount) }}
+
+      <!-- File / Folder Menu -->
+      <ng-container *ngIf="showTypeMenu">
+        <app-type-menu
+        (emitNodeType)="handleTypeOptionClick($event)"></app-type-menu>
+      </ng-container>
+
+      <!-- Edit Node Name -->
+      <app-add-node *ngIf="!showTypeMenu"
+        (nodeNameEmitted)="updateNodeName($event, nodeData, i)"
+      ></app-add-node>
+    </div>
+
+    <!-- Node Menu Add / Delete -->
+    <ng-template #nonEditableNode>
+        <div
+          [ngClass]="
+            showMenu && nodeInFocus === nodeData.id ? 'border rounded' : ''
+          "
+          (mouseenter)="showMenu = true; nodeInFocus = nodeData.id"
+          (mouseleave)="showMenu = false; nodeInFocus = ''"
+        >
+        |{{ "_".repeat(spaceCount) }}
+
+          <img
+            [width]="folderWidth"
+            [height]="folderHeight"
+            [src]="
+              nodeData.type === 'folder'
+                ? './assets/folder-open-regular.svg'
+                : './assets/file-regular.svg'
+            "
+            alt="file icon"
+          />
+          {{ nodeData.name }}
+
+          <ng-container *ngIf="showMenu && nodeInFocus === nodeData.id">
+            <app-edit-menu
+            [nodeDataType]="nodeData.type"
+            (emitSelectedAction)="handleNodeAction($event, nodeData, i)"></app-edit-menu>
+          </ng-container>
+        </div>
+      <app-nodes
+        *ngIf="nodeData.children"
+        [data]="nodeData.children"
+        [parentNode]="nodeData"
+        [spaceCount]="spaceCount"
+        [showTypeMenu]="true"
+        (emitUpdatedParentNode)="updateParentNode($event)"
+      ></app-nodes>
+    </ng-template>
+  </ng-container>
+</ng-container>

@@ -1,0 +1,21 @@
+<div class="header toolbar shadow" role="banner">
+  <img width="130" alt="Mable Logo"
+    src="https://mable.com.au/wp-content/uploads/2020/10/mable-logo-white.svg" />
+</div>
+
+<div class="content" role="main">
+<button class="btn btn-primary" (click)="handleAddFolderToRoot()"> Add Folder to root</button>
+
+<app-nodes
+[data]="folderData.children || []"
+[parentNode]="folderData"
+[spaceCount]="spaceCount"
+(emitUpdatedParentNode)="updateParentNode($event)"
+></app-nodes>
+
+<div class="border rounded mt-5">
+{{folderData.children | json}}
+</div>
+</div>
+
+
